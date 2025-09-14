@@ -111,8 +111,9 @@ button:hover {
   position: relative;
 }
 
-/* 🌞 Sunny hover (bright + pulse) */
-.sunny:hover {
+/* 🌞 Sunny hover/tap */
+.sunny:hover,
+.sunny.active {
   filter: brightness(1.6) drop-shadow(0 0 8px gold);
   animation: pulse 1s infinite;
 }
@@ -123,8 +124,9 @@ button:hover {
   100% { transform: scale(1); }
 }
 
-/* 🌧 Rainy hover (falling drops) */
-.rainy:hover::after {
+/* 🌧 Rainy hover/tap */
+.rainy:hover::after,
+.rainy.active::after {
   content: "💧💧💧";
   position: absolute;
   top: -10px;
@@ -139,8 +141,9 @@ button:hover {
   100% { top: 40px; opacity: 0; }
 }
 
-/* 🌥 Cloudy hover (floating effect) */
-.cloudy:hover {
+/* 🌥 Cloudy hover/tap */
+.cloudy:hover,
+.cloudy.active {
   animation: float 2s infinite ease-in-out;
 }
 
@@ -149,8 +152,9 @@ button:hover {
   50% { transform: translateY(-6px); }
 }
 
-/* ❄ Snowy hover (snow falling) */
-.snowy:hover::after {
+/* ❄ Snowy hover/tap */
+.snowy:hover::after,
+.snowy.active::after {
   content: "❄ ❄ ❄";
   position: absolute;
   top: -10px;

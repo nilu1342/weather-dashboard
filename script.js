@@ -39,7 +39,10 @@ locationBtn.addEventListener("click", () => {
 
 themeBtn.addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  localStorage.setItem(
+    "theme",
+    document.body.classList.contains("dark") ? "dark" : "light"
+  );
 });
 
 function initTheme() {
@@ -87,9 +90,29 @@ async function getWeatherByCoords(lat, lon) {
 // Render current weather + favorites button
 function renderCurrentWeather(data) {
   message.textContent = "";
+
+  // Detect condition for animation class
+  let condition = data.weather[0].main.toLowerCase();
+  let iconClass = "weather-icon";
+
+  if (condition.includes("sun") || condition.includes("clear")) {
+    iconClass += " sunny";
+  } else if (condition.includes("rain")) {
+    iconClass += " rainy";
+  } else if (condition.includes("cloud")) {
+    iconClass += " cloudy";
+  } else if (condition.includes("snow")) {
+    iconClass += " snowy";
+  }
+
   weatherResult.innerHTML = `
     <h2>${data.name}, ${data.sys.country}</h2>
-    <p><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png"> ${data.weather[0].description}</p>
+    <p>
+      <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
+           class="${iconClass}" 
+           onclick="toggleAnimate(this)">
+      ${data.weather[0].description}
+    </p>
     <p>🌡 Temp: ${Math.round(data.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
     <p>💧 Humidity: ${data.main.humidity}%</p>
     <p>🌬 Wind: ${data.wind.speed} ${units === "metric" ? "m/s" : "mph"}</p>
@@ -113,7 +136,8 @@ async function getForecast(lat, lon) {
     showMessage("Error fetching forecast.");
   }
 }
-//Render forecast
+
+// Render forecast
 function renderForecast(list) {
   forecastDiv.innerHTML = "";
   const daily = {};
@@ -149,7 +173,9 @@ function renderForecast(list) {
     forecastDiv.innerHTML += `
       <div class="forecast-day">
         <h4>${date.toDateString().slice(0, 10)}</h4>
-        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" class="${iconClass}">
+        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
+             class="${iconClass}" 
+             onclick="toggleAnimate(this)">
         <p>${Math.round(day.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
         <p>${day.weather[0].description}</p>
       </div>
@@ -157,6 +183,10 @@ function renderForecast(list) {
   });
 }
 
+// Toggle animation (for mobile tap)
+function toggleAnimate(el) {
+  el.classList.toggle("active");
+}
 
 // Favorites
 function addFavorite(city) {
