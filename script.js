@@ -1,4 +1,4 @@
-const apiKey = "61b8e1f67cbfde1df582a0056125723d"; // 🔑 Replace with your OpenWeather key
+const apiKey = "61b8e1f67cbfde1df582a0056125723d"; 
 let units = localStorage.getItem("units") || "metric";
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
@@ -87,49 +87,39 @@ async function getWeatherByCoords(lat, lon) {
   }
 }
 
-// Render current weather + favorites button
+// Render current weather
 function renderCurrentWeather(data) {
   message.textContent = "";
 
-  // Detect condition for animation class
   let condition = data.weather[0].main.toLowerCase();
-  let iconClass = "weather-icon";
+  let wrapperClass = "weather-icon-wrapper";
 
-  if (condition.includes("sun") || condition.includes("clear")) {
-    iconClass += " sunny";
-  } else if (condition.includes("rain")) {
-    iconClass += " rainy";
-  } else if (condition.includes("cloud")) {
-    iconClass += " cloudy";
-  } else if (condition.includes("snow")) {
-    iconClass += " snowy";
-  }
+  if (condition.includes("sun") || condition.includes("clear")) wrapperClass += " sunny";
+  else if (condition.includes("rain")) wrapperClass += " rainy active";
+  else if (condition.includes("cloud")) wrapperClass += " cloudy";
+  else if (condition.includes("snow")) wrapperClass += " snowy active";
+  else if (condition.includes("haze") || condition.includes("fog") || condition.includes("mist") || condition.includes("smoke")) wrapperClass += " haze";
 
-  // 🌤 Background change according to weather
-  document.body.classList.remove("bg-sunny", "bg-rainy", "bg-cloudy", "bg-snowy");
-  if (condition.includes("sun") || condition.includes("clear")) {
-    document.body.classList.add("bg-sunny");
-  } else if (condition.includes("rain")) {
-    document.body.classList.add("bg-rainy");
-  } else if (condition.includes("cloud")) {
-    document.body.classList.add("bg-cloudy");
-  } else if (condition.includes("snow")) {
-    document.body.classList.add("bg-snowy");
-  }
+  // Dynamic background
+  document.body.classList.remove("bg-sunny","bg-rainy","bg-cloudy","bg-snowy");
+  if (condition.includes("sun") || condition.includes("clear")) document.body.classList.add("bg-sunny");
+  else if (condition.includes("rain")) document.body.classList.add("bg-rainy");
+  else if (condition.includes("cloud")) document.body.classList.add("bg-cloudy");
+  else if (condition.includes("snow")) document.body.classList.add("bg-snowy");
 
   weatherResult.innerHTML = `
     <h2>${data.name}, ${data.sys.country}</h2>
-    <p>
-      <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
-           class="${iconClass}" 
-           onclick="toggleAnimate(this)">
-      ${data.weather[0].description}
-    </p>
+    <div class="${wrapperClass}">
+      <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" class="weather-icon" onclick="toggleAnimate(this)">
+    </div>
+    <p>${data.weather[0].description}</p>
     <p>🌡 Temp: ${Math.round(data.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
     <p>💧 Humidity: ${data.main.humidity}%</p>
     <p>🌬 Wind: ${data.wind.speed} ${units === "metric" ? "m/s" : "mph"}</p>
     <button onclick="addFavorite('${data.name}')">⭐ Add to Favorites</button>
   `;
+
+  enableMobileAnimations();
 }
 
 // Fetch 5-day forecast
@@ -157,47 +147,47 @@ function renderForecast(list) {
   list.forEach(item => {
     const date = new Date(item.dt * 1000);
     const day = date.toDateString();
-
-    // Only save the first forecast for each day
-    if (!daily[day]) {
-      daily[day] = item;
-    }
+    if (!daily[day]) daily[day] = item;
   });
 
-  // Show next 5 days
   Object.values(daily).slice(0, 5).forEach(day => {
     const date = new Date(day.dt * 1000);
-
-    // Weather condition for icon class
     let condition = day.weather[0].main.toLowerCase();
-    let iconClass = "weather-icon";
+    let wrapperClass = "weather-icon-wrapper";
 
-    if (condition.includes("sun") || condition.includes("clear")) {
-      iconClass += " sunny";
-    } else if (condition.includes("rain")) {
-      iconClass += " rainy";
-    } else if (condition.includes("cloud")) {
-      iconClass += " cloudy";
-    } else if (condition.includes("snow")) {
-      iconClass += " snowy";
-    }
+    if (condition.includes("sun") || condition.includes("clear")) wrapperClass += " sunny";
+    else if (condition.includes("rain")) wrapperClass += " rainy active";
+    else if (condition.includes("cloud")) wrapperClass += " cloudy";
+    else if (condition.includes("snow")) wrapperClass += " snowy active";
+    else if (condition.includes("haze") || condition.includes("fog") || condition.includes("mist") || condition.includes("smoke")) wrapperClass += " haze";
 
     forecastDiv.innerHTML += `
       <div class="forecast-day">
-        <h4>${date.toDateString().slice(0, 10)}</h4>
-        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" 
-             class="${iconClass}" 
-             onclick="toggleAnimate(this)">
+        <h4>${date.toDateString().slice(0,10)}</h4>
+        <div class="${wrapperClass}">
+          <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" class="weather-icon" onclick="toggleAnimate(this)">
+        </div>
         <p>${Math.round(day.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
         <p>${day.weather[0].description}</p>
       </div>
     `;
   });
+
+  enableMobileAnimations();
 }
 
-// Toggle animation (for mobile tap)
+// Toggle animation
 function toggleAnimate(el) {
   el.classList.toggle("active");
+}
+
+// Enable mobile tap animations
+function enableMobileAnimations() {
+  document.querySelectorAll('.weather-icon-wrapper').forEach(wrapper => {
+    wrapper.addEventListener('touchstart', () => {
+      wrapper.classList.toggle('active');
+    });
+  });
 }
 
 // Favorites
@@ -220,10 +210,7 @@ function renderFavorites() {
   favorites.forEach(city => {
     const div = document.createElement("div");
     div.className = "fav-item";
-    div.innerHTML = `
-      ${city}
-      <button onclick="removeFavorite('${city}')">x</button>
-    `;
+    div.innerHTML = `${city} <button onclick="removeFavorite('${city}')">x</button>`;
     div.addEventListener("click", () => getWeather(city));
     favList.appendChild(div);
   });
@@ -234,6 +221,6 @@ function showMessage(msg) {
   message.textContent = msg;
 }
 
-// Initialize on page load
+// Initialize
 initTheme();
 renderFavorites();
