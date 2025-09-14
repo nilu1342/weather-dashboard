@@ -113,7 +113,7 @@ async function getForecast(lat, lon) {
     showMessage("Error fetching forecast.");
   }
 }
-
+//Render forecast
 function renderForecast(list) {
   forecastDiv.innerHTML = "";
   const daily = {};
@@ -131,16 +131,32 @@ function renderForecast(list) {
   // Show next 5 days
   Object.values(daily).slice(0, 5).forEach(day => {
     const date = new Date(day.dt * 1000);
+
+    // Weather condition for icon class
+    let condition = day.weather[0].main.toLowerCase();
+    let iconClass = "weather-icon";
+
+    if (condition.includes("sun") || condition.includes("clear")) {
+      iconClass += " sunny";
+    } else if (condition.includes("rain")) {
+      iconClass += " rainy";
+    } else if (condition.includes("cloud")) {
+      iconClass += " cloudy";
+    } else if (condition.includes("snow")) {
+      iconClass += " snowy";
+    }
+
     forecastDiv.innerHTML += `
       <div class="forecast-day">
         <h4>${date.toDateString().slice(0, 10)}</h4>
-        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png">
+        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" class="${iconClass}">
         <p>${Math.round(day.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
         <p>${day.weather[0].description}</p>
       </div>
     `;
   });
 }
+
 
 // Favorites
 function addFavorite(city) {

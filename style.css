@@ -102,3 +102,65 @@ button:hover {
   margin-top: 10px;
   color: red;
 }
+
+/* 🌤 Weather Icon Animations */
+.weather-icon {
+  width: 60px;
+  height: 60px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+/* 🌞 Sunny hover (bright + pulse) */
+.sunny:hover {
+  filter: brightness(1.6) drop-shadow(0 0 8px gold);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* 🌧 Rainy hover (falling drops) */
+.rainy:hover::after {
+  content: "💧💧💧";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  animation: rain 0.8s infinite linear;
+}
+
+@keyframes rain {
+  0% { top: -10px; opacity: 1; }
+  100% { top: 40px; opacity: 0; }
+}
+
+/* 🌥 Cloudy hover (floating effect) */
+.cloudy:hover {
+  animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ❄ Snowy hover (snow falling) */
+.snowy:hover::after {
+  content: "❄ ❄ ❄";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  animation: snow 1.2s infinite linear;
+}
+
+@keyframes snow {
+  0% { top: -10px; opacity: 1; }
+  100% { top: 40px; opacity: 0; }
+}
