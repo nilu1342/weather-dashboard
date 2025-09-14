@@ -14,7 +14,7 @@ body.dark {
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #87ceeb, #e0f7ff); /* simple sky gradient */
+  background: linear-gradient(to bottom, #87ceeb, #e0f7ff); /* default sky gradient */
   background-size: cover;
   color: var(--text);
   margin: 0;
@@ -24,15 +24,9 @@ body {
   min-height: 100vh;
 }
 
-.container {
-  max-width: 700px;
-  margin: auto;
-}
-
+.container { max-width: 700px; margin: auto; }
 header h1 { margin-bottom: 15px; }
-
 .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
-
 input, button, select { padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
 button { background: var(--accent); color: #fff; cursor: pointer; border: none; }
 button:hover { opacity: 0.9; }
@@ -48,38 +42,54 @@ button:hover { opacity: 0.9; }
 
 .message { margin-top: 10px; color: red; }
 
-/* Weather Icons */
+/* Weather icons */
 .weather-icon-wrapper { position: relative; display: inline-block; }
+.weather-icon { width: 60px; height: 60px; cursor: pointer; transition: all 0.3s ease-in-out; }
 
-
-.weather-icon {
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  /* remove filters that affect colors */
-  filter: none;
+/* Sunny hover/tap */
+.sunny:hover .weather-icon,
+.sunny.active .weather-icon {
+  filter: brightness(1.6) drop-shadow(0 0 8px gold);
+  animation: pulse 1s infinite;
 }
-
-
-/* Sunny */
-.sunny.active { filter: brightness(1.6) drop-shadow(0 0 8px gold); animation: pulse 1s infinite; }
 @keyframes pulse { 0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
 
-/* Rainy */
-.rainy.active::after { content: "💧💧💧"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 14px; animation: rain 0.8s infinite linear; }
-@keyframes rain { 0% { top:-10px; opacity:1;} 100% { top:40px; opacity:0;} }
+/* Rainy hover/tap */
+.rainy:hover::after,
+.rainy.active::after {
+  content: "💧💧💧";
+  position: absolute;
+  top: -10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  animation: rain 0.8s infinite linear;
+}
+@keyframes rain { 0%{top:-10px;opacity:1;}100%{top:40px;opacity:0;} }
 
-/* Cloudy */
-.cloudy.active { animation: float 2s infinite ease-in-out; }
+/* Cloudy hover/tap */
+.cloudy:hover .weather-icon,
+.cloudy.active .weather-icon { animation: float 2s infinite ease-in-out; }
 @keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
 
-/* Snowy */
-.snowy.active::after { content:"❄ ❄ ❄"; position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:14px; animation:snow 1.2s infinite linear; }
+/* Snowy hover/tap */
+.snowy:hover::after,
+.snowy.active::after {
+  content:"❄ ❄ ❄";
+  position:absolute; top:-10px; left:50%;
+  transform:translateX(-50%);
+  font-size:14px; animation:snow 1.2s infinite linear;
+}
 @keyframes snow { 0%{top:-10px;opacity:1;}100%{top:40px;opacity:0;} }
 
 /* Haze/Fog */
-.haze::after { content:"🌫"; position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:24px; animation:hazeAnim 3s infinite ease-in-out; }
+.haze:hover::after,
+.haze.active::after {
+  content:"🌫";
+  position:absolute; top:-10px; left:50%;
+  transform:translateX(-50%);
+  font-size:24px;
+  animation:hazeAnim 3s infinite ease-in-out;
+}
 @keyframes hazeAnim { 0%,100%{opacity:0.3;transform:translateX(-50%) translateY(0);}50%{opacity:0.7;transform:translateX(-50%) translateY(-4px);} }
 
 /* Dynamic Backgrounds */
