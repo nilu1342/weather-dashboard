@@ -114,24 +114,27 @@ async function getForecast(lat, lon) {
   }
 }
 
-// Render forecast
 function renderForecast(list) {
   forecastDiv.innerHTML = "";
   const daily = {};
 
   list.forEach(item => {
     const date = new Date(item.dt * 1000);
-    if (date.getHours() === 12) {
-      daily[date.toDateString()] = item;
+    const day = date.toDateString();
+
+    // Only save the first forecast for each day
+    if (!daily[day]) {
+      daily[day] = item;
     }
   });
 
+  // Show next 5 days
   Object.values(daily).slice(0, 5).forEach(day => {
     const date = new Date(day.dt * 1000);
     forecastDiv.innerHTML += `
       <div class="forecast-day">
         <h4>${date.toDateString().slice(0, 10)}</h4>
-        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}.png">
+        <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png">
         <p>${Math.round(day.main.temp)} ${units === "metric" ? "°C" : "°F"}</p>
         <p>${day.weather[0].description}</p>
       </div>
