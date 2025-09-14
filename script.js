@@ -105,6 +105,18 @@ function renderCurrentWeather(data) {
     iconClass += " snowy";
   }
 
+  // 🌤 Background change according to weather
+  document.body.classList.remove("bg-sunny", "bg-rainy", "bg-cloudy", "bg-snowy");
+  if (condition.includes("sun") || condition.includes("clear")) {
+    document.body.classList.add("bg-sunny");
+  } else if (condition.includes("rain")) {
+    document.body.classList.add("bg-rainy");
+  } else if (condition.includes("cloud")) {
+    document.body.classList.add("bg-cloudy");
+  } else if (condition.includes("snow")) {
+    document.body.classList.add("bg-snowy");
+  }
+
   weatherResult.innerHTML = `
     <h2>${data.name}, ${data.sys.country}</h2>
     <p>
