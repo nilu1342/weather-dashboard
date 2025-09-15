@@ -97,3 +97,18 @@ button:hover { opacity: 0.9; }
 .bg-rainy { background: linear-gradient(to bottom, #4e54c8, #1f1c2c); }
 .bg-cloudy { background: linear-gradient(to bottom, #bdc3c7, #2c3e50); }
 .bg-snowy { background: linear-gradient(to bottom, #e6f1f5, #cfd9df); }
+
+/* Forecast section heading */
+section h2 {
+  font-size: 1.5rem;
+  margin: 16px 0;
+  color: var(--text);
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+/* Hover / tap effect */
+section h2:hover,
+section h2:active {
+  color: var(--accent);
+}
