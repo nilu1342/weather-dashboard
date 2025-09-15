@@ -112,3 +112,14 @@ section h2:hover,
 section h2:active {
   color: var(--accent);
 }
+header h1 {
+  font-size: 2rem;
+  color: var(--text);
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+header h1:hover,
+header h1:active {
+  color: var(--accent);
+}
