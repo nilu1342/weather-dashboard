@@ -25,7 +25,17 @@ body {
 }
 
 .container { max-width: 700px; margin: auto; }
-header h1 { margin-bottom: 15px; }
+header h1 {
+  margin-bottom: 15px; 
+  font-size: 2rem;
+  color: var(--text);
+  transition: color 0.3s;
+  cursor: pointer;
+ }
+header h1:hover,
+header h1:active {
+  color: var(--accent);
+}
 .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
 input, button, select { padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
 button { background: var(--accent); color: #fff; cursor: pointer; border: none; }
@@ -113,14 +123,3 @@ section h2:active {
   color: var(--accent);
 }
 
-header h1 {
-  font-size: 2rem;
-  color: var(--text);
-  transition: color 0.3s;
-  cursor: pointer;
-}
-
-header h1:hover,
-header h1:active {
-  color: var(--accent);
-}
