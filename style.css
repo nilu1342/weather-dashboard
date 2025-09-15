@@ -39,7 +39,7 @@ button:hover { opacity: 0.9; }
 .forecast-day { background: var(--card); padding: 10px; border-radius: 8px; }
 
 #favList { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-.fav-item { background: #eef6ff; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+.fav-item { background: #00BFFF; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
 .fav-item button { margin-left: 5px; background: red; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
 .message { margin-top: 10px; color: red; }
